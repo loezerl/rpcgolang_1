@@ -35,16 +35,19 @@ func main () {
 		case '*':
 			args := readArgs()
 			var reply int
-			err = client.Call("Arith.Multiply", args, &reply)
-			checkError("Multiply: ", err)
+			mulCall := client.Go("Arith.Multiply", args, &reply, nil)
+			fmt.Println("Esperando servidor..")
+			replyMul := <- mulCall.Done
+			checkError("Multiply: ", replyMul.Error)
 			fmt.Printf("%d * %d = %d\n",
 			args.A, args.B, reply)
 			os.Exit(0)
 		case '/':
 			args := readArgs()
 			var reply Quotient
-			err = client.Call("Arith.Divide", args, &reply)
-			checkError("Divide: ", err)
+			divCall := client.Go("Arith.Divide", args, &reply, nil)
+			replyDiv := <- divCall.Done
+			checkError("Divide: ", replyDiv.Error)
 			fmt.Printf("%d / %d = (%d,%d)\n",
 			args.A, args.B, reply.Q, reply.R)
 			os.Exit(0)
