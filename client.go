@@ -23,6 +23,8 @@ func main () {
 	
 	fmt.Println("* - multiplicação")
 	fmt.Println("/ - divisão")
+	fmt.Println("+ - soma")
+	fmt.Println("- - subtracao")
 	
 	var op byte
 	fmt.Scanf("%c\n", &op)
@@ -45,6 +47,22 @@ func main () {
 			checkError("Divide: ", err)
 			fmt.Printf("%d / %d = (%d,%d)\n",
 			args.A, args.B, reply.Q, reply.R)
+			os.Exit(0)
+		case '+':
+			args := readArgs()
+			var reply int
+			err = client.Call("Arith.Sum", args, &reply)
+			checkError("Sum: ", err)
+			fmt.Printf("%d + %d = %d\n",
+			args.A, args.B, reply)
+			os.Exit(0)
+		case '-':
+			args := readArgs()
+			var reply int
+			err = client.Call("Arith.Minus", args, &reply)
+			checkError("Minus: ", err)
+			fmt.Printf("%d - %d = %d\n",
+			args.A, args.B, reply)
 			os.Exit(0)
 		default:
 			fmt.Println("Opção inválida: ", op)

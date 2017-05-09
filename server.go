@@ -32,6 +32,16 @@ func (t *Arith) Divide (args *Args, reply *Quotient) error {
 	return nil
 }
 
+func (t *Arith) Sum (args *Args, reply *int) error {
+	*reply = args.A + args.B
+	return nil
+}
+
+func (t *Arith) Minus (args *Args, reply *int) error {
+	*reply = args.A - args.B
+	return nil
+}
+
 func main () {
 	arith := new(Arith)
 	rpc.Register(arith)
