@@ -1,0 +1,69 @@
+package main
+import (
+	"net/rpc"
+	"fmt"
+	"os"
+)
+
+type Args struct {
+	A, B int
+}
+type Quotient struct {
+	Q, R int
+}
+
+func main () {
+	
+	service := "localhost:13232"
+	client, err := rpc.Dial("tcp", service)
+	
+	defer client.Close()
+	
+	checkError("Dial: ", err)
+	
+	fmt.Println("* - multiplicação")
+	fmt.Println("/ - divisão")
+	
+	var op byte
+	fmt.Scanf("%c\n", &op)
+	
+	switch op {
+	/* código para implementar os
+	procedimentos disponíveis */
+		case '*':
+			args := readArgs()
+			var reply int
+			err = client.Call("Arith.Multiply", args, &reply)
+			checkError("Multiply: ", err)
+			fmt.Printf("%d * %d = %d\n",
+			args.A, args.B, reply)
+			os.Exit(0)
+		case '/':
+			args := readArgs()
+			var reply Quotient
+			err = client.Call("Arith.Divide", args, &reply)
+			checkError("Divide: ", err)
+			fmt.Printf("%d / %d = (%d,%d)\n",
+			args.A, args.B, reply.Q, reply.R)
+			os.Exit(0)
+		default:
+			fmt.Println("Opção inválida: ", op)
+			os.Exit(1)
+	}
+}
+
+func readArgs () Args {
+	var a, b int
+	fmt.Println("A: ")
+	fmt.Scanln(&a)
+	fmt.Println("B: ")
+	fmt.Scanln(&b)
+	return Args{a, b}
+}
+
+func checkError (str string, err error) {
+	if err != nil {
+		fmt.Println(str, err)
+		os.Exit(1)
+	}
+}
