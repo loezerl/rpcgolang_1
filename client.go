@@ -12,6 +12,15 @@ type Quotient struct {
 	Q, R int
 }
 
+
+// Implemente	o	jogo	pedra,	papel,	tesoura para	
+// que	funcione	ao	estilo	RPC.
+// – Isto	é,	crie	um	cliente	que	permite	jogar	contra	
+// um	servidor	e	a	jogada	é	executada	via	uma	
+// chamada	de	procedimento	remoto.
+
+
+
 func main () {
 	
 	service := "localhost:13232"
